@@ -1,0 +1,4 @@
+####
+
+POST  http://localhost:8888/api/logIn
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiQW5kZXIiLCJpYXQiOjE2NDg4Nzc0NjksImV4cCI6MTY0OTQ4MjI2OX0.HiHCBZdvVNAlum1VIFEx1s5oPKaZbiPiemM3z2O4ywA

@@ -1,0 +1,1 @@
+export { indexRouter } from "./index.routes.js";

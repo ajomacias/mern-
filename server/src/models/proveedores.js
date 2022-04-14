@@ -17,7 +17,7 @@ Proveedores.init({
         allowNull : true,
         field:"categoria",
         validate:{
-            isNumeric : true
+            isInt : true
         }
     },
     name : {
@@ -90,7 +90,7 @@ Proveedores.init({
     }
 })
 
-Proveedores.belongsTo(Catalogos,{
+Proveedores.belongsTo (Catalogos,{
     foreignKey :"category",
     targetKey : "_id"
 })

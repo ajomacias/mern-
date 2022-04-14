@@ -2,7 +2,7 @@
 import { Router } from "express";
 import { indexController } from "../controllers/index.js"
 
-export const indexRouter = Router();
+export const indexRoutes = Router();
 
-indexRouter.post("/logIn",indexController.logIn);
-indexRouter.post("/register",indexController.register);
+indexRoutes.post("/logIn",indexController.logIn);
+indexRoutes.post("/register",indexController.register);

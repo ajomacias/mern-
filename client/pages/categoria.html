@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body >
+    <div id="lol" class="relative">
+        <button id="button" class="bg-sky-600 borde p-2 rounded-sm border-b-slate-900" expanded="false" >Expaned</button>
+    </div>
+    <script >
+        function expanded(e){
+            let lol = document.getElementById("lol")
+            let button = document.getElementById('button');
+            e.preventDefault();
+            e.stopPropagation();
+            let rowsExpanded = [];
+
+            for(let i = 0; i < 4;i++){
+                rowsExpanded.push(document.createElement("a"));
+                rowsExpanded[i].textContent = "option" + i;
+                rowsExpanded[i].setAttribute("class","obasolute top-full chee block w-fit hover:bg-sky-400")
+                rowsExpanded[i].setAttribute("href","#")
+
+            }
+
+            if(button.getAttribute("expanded") == "false"){
+                button.setAttribute("expanded","true");
+                rowsExpanded.forEach(element => {
+                    lol.appendChild(element);
+                });
+                
+            }else{
+                button.setAttribute("expanded","false");
+                let options = document.querySelectorAll(".chee");
+                options.forEach(element => {
+                    element.remove();
+                });
+            }
+
+
+            console.log(button.getAttribute("expanded"));
+        }
+        document.getElementById("button").addEventListener("click",expanded);
+    </script>
+</body>
+</html>

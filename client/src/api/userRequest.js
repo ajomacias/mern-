@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const createUserRequest = async (data) => {
   try {
-    const response = await axios.post( "/api/register",  data );
+    const response = await axios.post( "/api/usuarios/register",  data );
     return response; 
 
   } catch (err) {
@@ -14,7 +14,7 @@ export const createUserRequest = async (data) => {
 
 export const logInUserRequest = async (data) => {
   try {
-    const response = await axios.post( "/api/logIn", data );
+    const response = await axios.post( "/api/usuarios/logIn", data );
     return response;
 
   } catch (err) {

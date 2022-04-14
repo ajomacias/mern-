@@ -55,7 +55,6 @@ export const SigUpPage = () => {
                 {isSubmitting ? <VscLoading className="animate-spin w-4 h-4 mx-auto " /> : "Sig Up!"}</button>
             </Form>
         )}
-
          </Formik>
      </div>
      </div>

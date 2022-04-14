@@ -2,8 +2,9 @@ import { Outlet } from "react-router-dom";
 
 const PublicRoutes = ()=>{
     return(
-        <div>
+      <div className="bg-key min-h-screen">
           <Outlet /> 
+          
         </div>
     )
 

@@ -4,7 +4,7 @@ import { createUserRequest, logInUserRequest } from "../api/userRequest";
 export const userContext = createContext();
 
 const UserProvider = ({children})=>{
-
+    
     const [sesion, setSesion ] = useState({
         sesion:false
     });
@@ -19,6 +19,7 @@ const UserProvider = ({children})=>{
     const getInto = async(data)=>{
         
         const response = await logInUserRequest(data);
+        console.log(response);
 
         if(response.status !==200){
             return {...response.data, verify:false}
@@ -35,11 +36,17 @@ const UserProvider = ({children})=>{
 
     }
 
+    const logOut = () =>{
+        window.localStorage.removeItem("sesion");
+
+    }
+
     return(
        <userContext.Provider value={{
            createUser,
            getInto,
-           sesion
+           sesion,
+           logOut
        }}>
            {children}
        </userContext.Provider>

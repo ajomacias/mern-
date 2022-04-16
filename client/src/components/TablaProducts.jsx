@@ -7,6 +7,7 @@ import { CardInfoProduct} from "../components/";
 import { useModalContext, useAlertContext } from "../hooks/";
 import { AiTwotoneDelete } from "react-icons/ai";
 import toast from "react-hot-toast";
+import { AiFillFilePdf } from "react-icons/ai";
 
 
 export const TablaProducts =() => {
@@ -91,6 +92,7 @@ export const TablaProducts =() => {
                                 <button onClick={(e)=>{
                                     handleDelete(producto.code);
                                 }} className="bg-red-500 w-fit p-3"> <AiTwotoneDelete /> </button>
+                                <Link className="w-fit p-3 bg-red-700 text-white inline-block" to={"/pdf/"+producto.code + ".pdf"}><AiFillFilePdf /></Link>
                       
                             </td>
                         </tr>

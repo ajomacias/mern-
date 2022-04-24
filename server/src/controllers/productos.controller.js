@@ -100,3 +100,22 @@ export const deleteProductoByCode = async(req,res,next) => {
 
     return res.status(200).json({message : "delete successfull"})
 }
+
+export const searchProduct = async(req, res, next)=>{
+  const query = req.query.q;
+  if(!query) return next("400 bad request ");
+  let data = await Productos.findAll({attributes : ["_id","code", "name","detail", "codalt","codBa"]});
+
+   data = data.map(item=> item.dataValues);
+
+   data = data.filter(item=>item.id === query ||item.code === query || item.codalt === query ||
+    item.codBa === query || item.detail === query ||item.code.includes(query) || item.codalt.includes(query) ||
+    item.codBa.includes(query) || item.detail.includes(query) )
+   data = data.map(item=>{
+     item.detail = item.detail.replaceAll(query,`<strong>${query}</strong>`);
+     return item;
+   })
+
+  res.status(200).json({data: data});
+
+}

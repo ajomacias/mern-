@@ -19,8 +19,8 @@ const PrivateRoutes = ( )=>{
     
 
     return(
-        <div className="flex justify-center h-[601px]">
-        <div className=" w-[1400px] bg-zinc-700" >
+        <div className="flex justify-center min-h-screen md:h-[601px]">
+        <div className="w-full md:w-[1400px] bg-zinc-700" >
             <Header functions={{logOut}} />
         {!verification()? <Navigate to="/logIn" replace /> : <Outlet />  
         }

@@ -19,7 +19,6 @@ const UserProvider = ({children})=>{
     const getInto = async(data)=>{
         
         const response = await logInUserRequest(data);
-        console.log(response);
 
         if(response.status !==200){
             return {...response.data, verify:false}

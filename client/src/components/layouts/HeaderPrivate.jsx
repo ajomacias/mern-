@@ -13,7 +13,8 @@ export const Header = ({functions})=>{
     return(
         <div >
             <header>
-            <nav className="bg-zinc-800 flex flex-row-reverse h-16 items-center border-b border-b-slate-500 text-gray-300">
+            <nav className="bg-zinc-800 fixed w-full md:flex flex md:flex-row-reverse flex-row-reverse md:h-16 h-16 md:items-center items-center border-b md:border-b border-b-slate-500 md:border-b-slate-500 text-gray-300">
+               {}
                <ul className="hover:text-gray-100 mr-4">
                   <li><button 
                    onClick={handleClick}
@@ -26,13 +27,14 @@ export const Header = ({functions})=>{
                         <NavLink className={({isActive})=>isActive ?"bg-slate-600 p-4 mx-4":"p-4 mx-4"} to="/products">Product</NavLink>
                     </li>
                 </ul>
-                
+               
                 <ul className="hover:text-gray-100 p-4">
                     <li><NavLink className={({isActive})=>isActive ?"bg-slate-600 p-4":"p-4"} to="/">Home</NavLink></li>
                 </ul>
                  <ul onMouseEnter={()=>{setOpen(true)}} 
-                    onMouseLeave={()=>{setOpen(false) }} className="hover:text-gray-100 p-4">
-                    <li><NavLink className={({isActive})=>isActive ?"bg-slate-600 p-4":"p-4"} to="/products">Home</NavLink></li>
+                    onMouseLeave={()=>{setOpen(false) }} 
+                    className="hover:text-gray-100 p-4">
+                    <li><NavLink className={({isActive})=>isActive ?"bg-slate-600 p-4":"p-4"} to="/not">not</NavLink></li>
                     {open && <ul className="absolute bg-green-500 w-[75px] ">
                     <li 
                     className="hover:bg-green-300 hover:cursor-pointer">
@@ -47,8 +49,10 @@ export const Header = ({functions})=>{
                             lll
                     </li>
                  </ul> }
+                
                     
                 </ul>
+                
                 
             </nav>
             </header>

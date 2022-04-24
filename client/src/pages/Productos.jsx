@@ -8,7 +8,7 @@ export const Productos = () =>{
         <ProductoProvider>
         <div className=" flex flex-wrap  w-full h-full bg-zinc-700" >
         <SideBarProducts />
-        <div className="h-full w-10/12 flex justify-center items-center" >
+        <div className="md:h-full md:w-10/12 w-full md:flex dm:justify-center items-center" >
         <Outlet />
         </div>
         </div>

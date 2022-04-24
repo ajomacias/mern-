@@ -14,11 +14,12 @@ export const FormularioProducto = () => {
 
   const { createProduct, getProductByCodeRequest, updateProduct } = useProductoContext(null);
   const { generalAlert } = useAlertContext(); 
+  const [ loading , setLoading ] = useState(false);
   const { code } = useParams();
-  
   const [producto, setProducto] = useState({
     code:"",
     name:"",
+    precFarm: "",
     detail:"",
     codBa : "",
     codalt : "",
@@ -28,7 +29,7 @@ export const FormularioProducto = () => {
     price4 : "",
     cantidad : "",
     costo : "",
-    taeiIv : "",
+    tarifIv : "",
     image : null,
     producWeb : "",
     idUnidadMedida : "",
@@ -51,6 +52,7 @@ export const FormularioProducto = () => {
     porcentajeImp : "",
     porcentajeIce : "",
     porcentajelrbpnr : "",
+    precio3PorcFarm : "",
     promFarm : "",
     paqueteFarm : "",
     pvpFarm : "",
@@ -69,6 +71,7 @@ export const FormularioProducto = () => {
     utilFarm : "",
     pFarm : "",
     costSinIv : "",
+    costConIv : "",
     horaEntrada : new Date().toISOString().replace("T"," ").replace("Z","").slice(0,19),
     horaSalida : new Date().toISOString().replace("T"," ").replace("Z","").slice(0,19),
     unidades : "",
@@ -92,19 +95,26 @@ export const FormularioProducto = () => {
   useEffect(()=>{
 
     (async()=>{
-      if(code){
+      
+      if(code){ 
+        setLoading(true);
         const productoRequest =  await getProductByCodeRequest(code);
-        if(productoRequest) setProducto(productoRequest); 
+        if(!productoRequest) return setLoading(false);
+        setProducto(productoRequest);
+        setLoading(false) 
 
       }
     })()
 
+  },[code,getProductByCodeRequest])
 
-  },[])
+  return loading ?(
+    <div className="h-full w-full md:h-5/6 md:w-10/12 md:p-2 md:flex flex md:items-center items-center md:justify-center justify-center md:bg-white bg-white md:border md:border-slate-700 md:overflow-y-scroll" >
+       <BiLoaderAlt className=" text-black text-opacity-90 h-32 w-32 animate-spin" />
+    </div>
+  ) :  (
 
-  return (
-
-      <div className="h-5/6 w-10/12 p-2 bg-white border border-slate-700 overflow-y-scroll" >
+      <div className="md:h-5/6 h-full md:w-10/12 w-full  p-1 bg-white border border-slate-700 overflow-y-scroll" >
         <Formik
         initialValues={producto}
         validationSchema={Yup.object({
@@ -116,11 +126,12 @@ export const FormularioProducto = () => {
           codalt : Yup.string().max(20).required("this is required!!"),
           price : Yup.number().min(0).required(),
           price2 : Yup.number().min(0).nullable(true),
+          precFarm : Yup.number().min(0),
           price3 : Yup.number().min(0).nullable(true),
           price4 :Yup.number().min(0).nullable(true),
           cantidad : Yup.number().min(0).nullable(true),
           costo : Yup.number().min(0).nullable(true),
-          taeiIv : Yup.number().nullable(true),
+          tarifIv : Yup.number().min(0).max(100).nullable(true),
           producWeb : Yup.number().nullable(true),
           idUnidadMedida : Yup.number().nullable(true),
           idTipoProducto : Yup.number().nullable(true),
@@ -129,8 +140,8 @@ export const FormularioProducto = () => {
           subcategoriaId2 : Yup.number().nullable(true),
           stockMin : Yup.number().min(0).nullable(true),
           fechaCadu : Yup.date().required().nullable(true),
-          prec4Porc : Yup.number().min(0).nullable(true),
-          prec3Porc : Yup.number().min(0).nullable(true),
+          prec4Porc : Yup.number().min(0).max(100).nullable(true),
+          prec3Porc : Yup.number().min(0).max(100).nullable(true),
           prec2Porc :Yup.number().min(0).nullable(true),
           porcentajeUtil : Yup.number().min(0).nullable(true),
           porcentajeDesc : Yup.number().min(0).nullable(true),
@@ -176,14 +187,11 @@ export const FormularioProducto = () => {
           externo : Yup.number().min(0).nullable(true),
           lote : Yup.string().max(20).min(1).nullable(true),
           generico :Yup.string().max(120).min(1).nullable(true) ,
-          
-          
-    
+          costConIv : Yup.number().min(0).nullable(true)
         })}
         onSubmit={async(values, actions)=>{
         if(!code){
           const response = await createProduct(values);
-          console.log(response);
         generalAlert(response.data.message);
         }else{
           const response2 = await updateProduct(values, code);
@@ -198,7 +206,7 @@ export const FormularioProducto = () => {
         
         enableReinitialize={true}
         >
-          {({isSubmitting, handleSubmit })=>(
+          {({isSubmitting, handleSubmit, values })=>(
             <div className="text-mono ring-1 rounded">
               <div className="h-7 bg-zinc-300"></div>
               
@@ -267,7 +275,19 @@ export const FormularioProducto = () => {
                 <label className="font-medium mx-2" htmlFor="costSinIv" >Costo sin iva*</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1 ring-zinc-400" name="costSinIv" type="text"/>
+                      <Field onKeyUp={()=>{
+                        if(isNaN(values.costSinIv || values.costSinIv < 0 || !values.costSinIv )) return values.costSinIv = 0;
+                        if(!values.tarifIv || isNaN(values.tarifIv) || values.tarifIv < 0 || values.tarifIv > 100 ){
+                          values.tarifIv = 0;
+                          values.costConIv = 0;
+                          return;
+                        }
+                        const precioBase = parseFloat(values.costSinIv);
+                        const iva = parseFloat(values.tarifIv);
+                        const valorACobrarConIva = parseFloat(((precioBase*iva)/100).toFixed(2));
+                        const totalCostoConIva = valorACobrarConIva + precioBase;
+                        values.costConIv = totalCostoConIva.toFixed(2);
+                      }} className="focus:outline-none ring-1 ring-zinc-400" name="costSinIv" type="text"/>
                       <ErrorMessage className="text-xs text-red-400" name="costSinIv" component="p" />
                       </td>
                     </tr>
@@ -277,8 +297,17 @@ export const FormularioProducto = () => {
                 <label className="font-medium mx-2" htmlFor="tarifIv" >Tarifa Iva*</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1 ring-zinc-400" name="tarifIv" type="text"/>
-                      <ErrorMessage className="text-xs text-red-400" name="tariIv" component="p" />
+                      <Field onKeyUp={()=>{
+                        if(isNaN(values.tarifIv) || values.tarifIv < 0 || values.tarifIv > 100 ) return values.tarifIv = 0;
+                        if(isNaN(values.costSinIv || values.costSinIv < 0 ) ) return values.costSinIv = 0;
+                        const precioBase = parseFloat(values.costSinIv);
+                        const iva = parseFloat(values.tarifIv);
+                        const valorACobrarConIva = parseFloat(((precioBase*iva)/100).toFixed(2));
+                        const totalCostoConIva = valorACobrarConIva + precioBase;
+                        values.costConIv = totalCostoConIva.toFixed(2);
+                        
+                      }} className="focus:outline-none ring-1 ring-zinc-400" name="tarifIv" type="text"/>
+                      <ErrorMessage className="text-xs text-red-400" name="tarifIv" component="p" />
                       </td>
                     </tr>
                     <tr>
@@ -287,7 +316,34 @@ export const FormularioProducto = () => {
                 <label className="font-medium mx-2" htmlFor="price" >Precio*</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1 ring-zinc-400" name="price" type="text"/>
+                      <Field onKeyUp={()=>{
+
+                         let totalDescuento, porcentaje, precioBase;
+                         if(isNaN(values.price || values.price < 0 || !values.price )) return;
+                         if(!isNaN(values.prec2Porc) && values.prec2Porc <= 100 && values.prec2Porc >=  0 && values.prec2Porc){
+                          porcentaje = parseFloat(values.prec2Porc);
+                          precioBase = parseFloat(values.price);
+                          totalDescuento = ((100-porcentaje)/100 );
+                          totalDescuento = totalDescuento * precioBase;
+                          values.price2 = totalDescuento.toFixed(2);
+                         }
+                         if(!isNaN(values.prec3Porc) && values.prec3Porc <= 100 && values.prec3Porc >=  0 && values.prec3Porc){
+                          porcentaje = parseFloat(values.prec3Porc);
+                          precioBase = parseFloat(values.price);
+                          totalDescuento = ((100-porcentaje)/100 );
+                          totalDescuento = totalDescuento * precioBase;
+                          values.price3 = totalDescuento.toFixed(2);
+                         }
+                         if(!isNaN(values.prec4Porc) && values.prec4Porc <= 100 && values.prec4Porc >=  0 && values.prec4Porc){
+                          porcentaje = parseFloat(values.prec4Porc);
+                          precioBase = parseFloat(values.price);
+                          totalDescuento = ((100-porcentaje)/100 );
+                          totalDescuento = totalDescuento * precioBase;
+                          values.price4 = totalDescuento.toFixed(2);
+                         }
+                         
+
+                      }} className="focus:outline-none ring-1 ring-zinc-400" name="price" type="text"/>
                       <ErrorMessage className="text-xs text-red-400" name="price" component="p" />
                       </td>
                     </tr>
@@ -422,7 +478,8 @@ export const FormularioProducto = () => {
                 <label className="font-medium mx-2" htmlFor="promFarm" >Promocion farmacia</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1 ring-zinc-400" name="promFarm" type="text"/>
+                      <Field 
+                      className="focus:outline-none ring-1 ring-zinc-400" name="promFarm" type="text"/>
                       <ErrorMessage className="text-xs text-red-400" name="promFarm" component="p" />
                       </td>
                       <td>
@@ -459,10 +516,28 @@ export const FormularioProducto = () => {
                       <ErrorMessage className="text-xs text-red-400" name="pvpFarm" component="p" />
                       </td>
                       <td>
-                      <label className="font-medium block mx-2" htmlFor="precFarm">Precio farmacia</label>
+                      <label
+                       className="font-medium block mx-2" htmlFor="precFarm">Precio farmacia</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1  ring-zinc-400" name="precFarm" type="text"/>
+                      <Field
+                      onKeyUp={()=>{
+                        
+                        if(!values.precFarm || isNaN(values.precFarm)){
+                          values.precFarm = 0 ;
+                          values.price2PorFarm = 0; 
+                          values.precio3PorcFarm = 0;
+                          values.price4PorFarm = 0;
+                          return
+
+                        } 
+                        values.price2PorFarm = (values.precFarm * 2).toFixed(2)
+                        values.precio3PorcFarm = (values.precFarm * 3).toFixed(2)
+                        values.price4PorFarm = (values.precFarm * 4).toFixed(2)
+                        
+                        
+                      }}
+                      className="focus:outline-none ring-1  ring-zinc-400" name="precFarm" type="text"/>
                       <ErrorMessage className="text-xs text-red-400" name="precFarm" component="p" />
                       </td>
                     </tr>
@@ -472,7 +547,18 @@ export const FormularioProducto = () => {
                 <label className="font-medium mx-2" htmlFor="descFarm" >Descuento farmacia</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1 ring-zinc-400" name="descFarm" type="text"/>
+                      <Field
+                      onKeyUp={()=>{
+                        if(!values.descFarm || values.descFarm < 0 || values.descFarm > 100 || isNaN(values.descFarm
+                        || isNaN(values.precFarm))){
+                          values.descFarm = 0;
+                          values.valDscFarm = 0;
+                        } 
+
+                        values.valDscFarm = ((values.precFarm * values.descFarm)/100).toFixed(2) ;
+          
+                      }}
+                       className="focus:outline-none ring-1 ring-zinc-400" name="descFarm" type="text"/>
                       <ErrorMessage className="text-xs text-red-400" name="descFarm" component="p" />
                       </td>
                       <td>
@@ -723,28 +809,64 @@ export const FormularioProducto = () => {
                   <tbody>
                     <tr>
                       <td>
-                      <label className="font-medium block mx-2" htmlFor="prec2Porc" >Precio 2 porciones</label>
+                      <label className="font-medium block mx-2" htmlFor="prec2Porc" >Precio 2 porcentaje</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1  ring-zinc-400" name="prec2Porc" type="text"/>
+                      <Field onKeyUp={()=>{
+                        let totalDescuento, porcentaje, precioBase;
+                        if(isNaN(values.price || values.price < 0 || !values.price )) return;
+                        if(!isNaN(values.prec2Porc) && values.prec2Porc <= 100 && values.prec2Porc >=  0 && values.prec2Porc){
+                         porcentaje = parseFloat(values.prec2Porc);
+                         precioBase = parseFloat(values.price);
+                         totalDescuento = ((100-porcentaje)/100 );
+                         totalDescuento = totalDescuento * precioBase;
+                         values.price2 = totalDescuento.toFixed(2);
+                        }
+                      }} className="focus:outline-none ring-1  ring-zinc-400" name="prec2Porc" type="text"/>
                       <ErrorMessage className="text-xs text-red-400" name="prec2Porc" component="p" />
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <label className="font-medium block mx-2" htmlFor="prec3Porc" >Precio 3 porciones</label>
+                      <label className="font-medium block mx-2" htmlFor="prec3Porc" >Precio 3 porcentaje</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1  ring-zinc-400" name="prec3Porc" type="text"/>
+                      <Field  
+                      onKeyUp={()=>{
+                        let totalDescuento, porcentaje, precioBase;
+                        if(isNaN(values.price || values.price < 0 || !values.price )) return;
+                        if(!isNaN(values.prec3Porc) && values.prec3Porc <= 100 && values.prec3Porc >=  0 && values.prec3Porc){
+                         porcentaje = parseFloat(values.prec3Porc);
+                         precioBase = parseFloat(values.price);
+                         totalDescuento = ((100-porcentaje)/100 );
+                         totalDescuento = totalDescuento * precioBase;
+                         values.price3 = totalDescuento.toFixed(2);
+                        }
+                      }}
+                      className="focus:outline-none ring-1  ring-zinc-400" name="prec3Porc" type="text"/>
                       <ErrorMessage className="text-xs text-red-400" name="prec3Porc" component="p" />
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      <label className="font-medium block mx-2" htmlFor="prec4Porc" >Precio 4 porciones</label>
+                      <label className="font-medium block mx-2" htmlFor="prec4Porc" >Precio 4 porcentaje</label>
                       </td>
                       <td>
-                      <Field className="focus:outline-none ring-1  ring-zinc-400" name="prec4Porc" type="text"/>
+                      <Field
+                      onKeyUp={()=>{
+                        let totalDescuento, porcentaje, precioBase;
+                        if(isNaN(values.price || values.price < 0 || !values.price )) return;
+                        if(!isNaN(values.prec4Porc) && values.prec4Porc <= 100 && values.prec4Porc >=  0 && values.prec4Porc){
+                         porcentaje = parseFloat(values.prec4Porc);
+                         precioBase = parseFloat(values.price);
+                         totalDescuento = ((100-porcentaje)/100 );
+                         totalDescuento = totalDescuento * precioBase;
+                         values.price4
+                         
+                         = totalDescuento.toFixed(2);
+                        }
+                      }} 
+                      className="focus:outline-none ring-1  ring-zinc-400" name="prec4Porc" type="text"/>
                       <ErrorMessage className="text-xs text-red-400" name="prec4Porc" component="p" />
                       </td>
                     </tr>

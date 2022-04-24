@@ -41,16 +41,15 @@ export const TablaProducts =() => {
                 </div>
            </div>
        ))
-
    }
 
   return (
     
       <>  
-        {productos ?<div className="p-5 w-10/12 h-5/6 overflow-y-scroll bg-zinc-500 ">
-               <div className=" h-full bg-zinc-100">
-                <table className="table-auto w-full text-leftborder-slate-600">
-                    <thead className="bg-zinc-800 text-white">
+        {productos ?<div className="md:p-5 w-full h-full md:w-10/12 md:h-5/6 overflow-y-scroll bg-zinc-500 ">
+               <div className=" md:h-full h-full bg-zinc-100 flex items-center md:flex md:items-start md:bg-zinc-100">
+                <table className="table-auto  w-full text-leftborder-slate-600">
+                    <thead className="bg-blue-500 text-white">
                         <tr>
                             <th className="border-r border-zinc-400" >            
                                 ID
@@ -89,11 +88,10 @@ export const TablaProducts =() => {
                             </td>
                             <td className="border-r flex justify-center items-center border-zinc-400">
                                 <Link to={"create/"+producto.code} className="w-fit p-3 bg-yellow-300 inline-block" ><GrDocumentUpdate/></Link>
+                                <Link className="w-fit p-3 bg-red-700 text-white inline-block" to={"/pdf/"+producto.code + ".pdf"}><AiFillFilePdf /></Link>
                                 <button onClick={(e)=>{
                                     handleDelete(producto.code);
                                 }} className="bg-red-500 w-fit p-3"> <AiTwotoneDelete /> </button>
-                                <Link className="w-fit p-3 bg-red-700 text-white inline-block" to={"/pdf/"+producto.code + ".pdf"}><AiFillFilePdf /></Link>
-                      
                             </td>
                         </tr>
 
@@ -105,7 +103,6 @@ export const TablaProducts =() => {
                 </div>
                 </div> :<button onClick={()=>navigate("create")} className="text-white w-80 h-80 opacity-20 hover:opacity-40 " > <MdNoteAdd className="w-full h-full" /> </button>}       
         </>
-
   )
 
 }

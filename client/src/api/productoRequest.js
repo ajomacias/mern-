@@ -60,3 +60,13 @@ export const deleteProductByCodeRequest = async (code) =>{
         return err.response;
     }
 }
+
+export const searchProductRequest = async ( clave ) =>{
+    let response = null;
+    try{
+        response = await axios.get("/api/productos/s/?q=" + clave );
+        return response;
+    }catch(err){
+        return err.response;
+    }
+}

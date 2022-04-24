@@ -1,11 +1,12 @@
 import { createContext, useState, useEffect } from "react";
-import { createProductRequest, getProductosRequest,getProductByCodeRequest, updateProductRequest,deleteProductByCodeRequest } from "../api/productoRequest";
-import * as data from "../data";
+import { createProductRequest, getProductosRequest,getProductByCodeRequest, updateProductRequest,deleteProductByCodeRequest,searchProductRequest } from "../api/productoRequest";
+//import * as data from "../data";
 export const productoContext = createContext();
 
 const ProductoProvider = ({children}) => {
 
     const [ productos, setProductos ] = useState([]);
+   // const [ search, setSearch ] = useState([]);
 
     const createProduct = async (data)=>{
         const result = await createProductRequest(data);
@@ -60,6 +61,11 @@ const ProductoProvider = ({children}) => {
         return response;
     }
 
+    const searchProduct = async (clave) =>{
+        const res = await searchProductRequest(clave);
+         return res;
+    }
+
     useEffect(()=>{
         getProducts();
 
@@ -75,6 +81,7 @@ const ProductoProvider = ({children}) => {
                 getProductByCodeRequest,
                 updateProduct,
                 deleteProduct,
+                searchProduct,
                 productos
             }
         } >

@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useProductoContext } from "../hooks/useProductoContext";
 import { BiDetail,BiLoaderAlt } from "react-icons/bi";
 import { BsCashCoin } from "react-icons/bs";
-//import { NotFoundPage } from "../pages";
 import { useEffect, useState } from "react";
 import { FcRemoveImage } from "react-icons/fc";
 import { GrMoney } from "react-icons/gr";
@@ -13,7 +12,6 @@ import { GoBook } from "react-icons/go";
 export const ViewProduct = () => {
     const { code } = useParams();
     const { getProductByCodeRequest } = useProductoContext();
-    //const response = getProductByCodeRequest(code);
     const [producto, setProducto] = useState(null);
 
     useEffect(() => {
@@ -24,16 +22,14 @@ export const ViewProduct = () => {
     }, [])
 
     if (!producto) return (
-        <div className="w-10/12 h-5/6 p-2 flex justify-center items-center bg-zinc-100" >
-            <BiLoaderAlt className=" text-black text-opacity-90 h-32 w-32 animate-spin" />
+        <div className="w-full h-full md:w-10/12 md:h-5/6 md:p-2 md:flex flex md:justify-center justify-center items-center md:items-cente bg-zinc-100r md:bg-zinc-100" >
+            <BiLoaderAlt className="text-black text-opacity-90 h-32 w-32 animate-spin"/>
         </div>
     )
 
-    console.log(producto);
-
     return (
         <>
-               <div className="w-10/12 h-5/6 p-2 bg-zinc-100" >
+               <div className="w-full h-full md:w-10/12 md:h-5/6 p-2 bg-zinc-100" >
                 <div id="xddd" className="w-full h-full p-1 border overflow-y-scroll rounded border-slate-700 " >
                  <div className="h-fit w-full ring-1" >
                  <h1 className="w-full p-1 bg-zinc-300 text-center flex justify-center items-center font-semibold text-base" > <BiDetail /> DETALLE PRODUCTO #{producto.code}</h1>
@@ -116,7 +112,7 @@ export const ViewProduct = () => {
                         </div>
                         <div className="w-3/12 border-r border-r-slate-400">
                           <h3 className="font-normal" >Comision</h3>
-                          <p className=" my-1w-48 pr-2 text-right bg-zinc-200"> ${producto.cosmision} </p>
+                          <p className=" my-1w-48 pr-2 text-right bg-zinc-200"> ${producto.comision} </p>
                         </div>
                         <div className="w-3/12 border-r border-r-slate-400">
                           <h3 className="font-normal" >Comision #2</h3>

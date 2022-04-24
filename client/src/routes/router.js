@@ -3,7 +3,6 @@ import PublicRoutes from "./publicRoutes";
 import PrivateRoutes from "./privateRoutes";
 import { SigUpPage, LogInPage, HomePage, NotFoundPage,Productos, ViewProduct,SearchProduct } from "../pages/";
 import { TablaProducts, FormularioProducto } from "../components";
-//import PDFViewer from "@react-pdf/renderer";
 import { VerProductoPDF } from "../pages/VerProductoPDF";
 
 const Router = () => {
@@ -35,7 +34,7 @@ const Router = () => {
         
 
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/pdf/:code.pdf" element={  <VerProductoPDF />} />
+        <Route path="/pdf/:code.pdf" element={<VerProductoPDF />} />
       </Routes>
     </div>
   );

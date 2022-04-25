@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { createUserRequest, logInUserRequest } from "../api/userRequest";
+import { useNavigate } from "react-router-dom";
 
 export const userContext = createContext();
 
@@ -35,8 +36,12 @@ const UserProvider = ({children})=>{
 
     }
 
+
+
+
     const logOut = () =>{
         window.localStorage.removeItem("sesion");
+
 
     }
 

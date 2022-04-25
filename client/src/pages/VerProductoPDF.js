@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Page,
-  Image,
   StyleSheet,
 } from "@react-pdf/renderer";
 import { useParams, useNavigate } from "react-router-dom";
@@ -13,13 +12,16 @@ import axios from "axios";
 
 export const VerProductoPDF = () => {
   const { code } = useParams();
-  //const response = getProductByCodeRequest(code);
   const [producto, setProducto] = useState(null);
   const location = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const productRequest = await axios.get("/api/productos/" + code);
+      const productRequest = await axios.get("/api/productos/" + code,{
+        headers:{
+          Authorization :"bearer " + JSON.parse(localStorage.getItem("sesion")).data
+        }
+      });
       setProducto(productRequest.data.data);
     })();
   }, []);

@@ -6,9 +6,9 @@ export const Productos = () =>{
 
     return(
         <ProductoProvider>
-        <div className=" flex flex-wrap  w-full h-full bg-zinc-700" >
+        <div className=" flex flex-wrap w-full h-full bg-zinc-700" >
         <SideBarProducts />
-        <div className="md:h-full md:w-10/12 w-full md:flex dm:justify-center items-center" >
+        <div className="md:h-full md:w-10/12 w-full md:flex md:justify-center md:items-center" >
         <Outlet />
         </div>
         </div>

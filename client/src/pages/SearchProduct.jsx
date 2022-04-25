@@ -31,7 +31,7 @@ export const SearchProduct = () =>{
     return(
         <>
         { loading ? <div
-         className="md:p-5 p-0 md:w-10/12 w-full h-full md:h-5/6 flex md:flex flex-wrap md:flex-wrap justify-center md:justify-center items-center md:items-center  md:overflow-y-scroll bg-white md:bg-white "> 
+         className="md:p-5 p-1 mt-16 md:w-10/12 w-full h-full md:h-5/6 flex md:flex flex-wrap md:flex-wrap justify-center md:justify-center items-center md:items-center  md:overflow-y-scroll bg-white md:bg-white "> 
         <BiLoaderAlt className=" text-black text-opacity-90 h-32 w-32 animate-spin" />
         </div>  : 
          <div className="md:p-5 p-1 mt-16 md:w-10/12 w-full h-full md:h-5/6 md:overflow-y-scroll bg-white md:bg-white ">

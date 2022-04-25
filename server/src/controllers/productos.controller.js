@@ -73,7 +73,6 @@ export const getProductoByCode = async (req, res, next) => {
   let data;
   const code = req.params.code;
 
-  if (!isNaN(code)) return next("400 the type param is string");
   try{
   data = await Productos.findOne({
   include:{ model : Proveedores, required : false, attributes:['name'] } ,where: { code: code } }); 

@@ -29,11 +29,10 @@ const ProductoProvider = ({children}) => {
 
      return result;
 
-
     }
 
     const getProducts = async() =>{
-        let response = await getProductosRequest();
+        const response = await getProductosRequest();
         setProductos(response.data?.data?response.data.data.rows:[]);
     }
 

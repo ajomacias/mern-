@@ -6,7 +6,9 @@ export const verifyToken = async (req, res, next) => {
 
   let token = null
 
-  const authHeader = req.get("Authorization");
+  const authHeader = await req.get("Authorization");
+
+  console.log(authHeader);
   try {
 
     if (!authHeader || !authHeader.toLowerCase().startsWith("bearer")) {

@@ -9,7 +9,7 @@ const conexion = new Sequelize(Credentials.DB_NAME,Credentials.DB_USER,Credentia
         min: 0,
         acquire: 30000,
         idle: 10000
-    },
+    }, 
     port: 3306,
 
 })

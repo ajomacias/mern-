@@ -96,7 +96,13 @@ Productos.init({
             notNull : false,
             min : 0,
             max : 1000000,
-        }
+        } 
+    },
+    producweb : {
+        type : DataTypes.STRING,
+        defaultValue : null,
+        allowNull: true,
+        field : "productoweb"
     },
     cantidad : {
         type: DataTypes.FLOAT(10,4),

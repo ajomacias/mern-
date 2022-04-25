@@ -2,8 +2,7 @@
 import { config } from "dotenv";
 config()
 
-class Credentials{
-
+class Credentials{       
   static PORT = process.env.PORT || 3000;
   static DB_NAME = process.env.DB_NAME || "test";
   static DB_USER = process.env.DB_USER || "root";

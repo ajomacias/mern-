@@ -101,7 +101,7 @@ export const TablaProducts =() => {
                     </tbody>
                 </table>
                 </div>
-                </div> :<div className="flex justify-center h-full items-center"> <button onClick={()=>navigate("create")} className="text-white mr-16 w-80 h-80 opacity-20 hover:opacity-40 " > <MdNoteAdd className="w-full h-full" /> </button></div>}       
+                </div> :<div className="flex justify-center h-full items-center"> <button onClick={()=>navigate("create")} className="text-white w-80 h-80 opacity-20 hover:opacity-40 " > <MdNoteAdd className="w-full h-full" /> </button></div>}       
         </>
   )
 

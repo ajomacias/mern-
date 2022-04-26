@@ -23,8 +23,11 @@ const SideBarProducts = () => {
   return (
     <div className= {isOpen && "h-16" +"md:text-white fixed flex md:items-center flex-col opacity-70 md:justify-center w-9/12 h-full m-0  md:mb-2 md:transition-all md:relative py-2 px-2 md:w-2/12 md:flex md:flex-col justify-center items-center bg-zinc-800"}>
       
-      {isOpen ? <> <div className="text-gray-300 relative flex justify-center mb-7">
-      <button onClick={handleClick} className="text-white bottom-full top-2 left-[90%] absolute md:hidden ">x</button>
+      {isOpen ? <> <div className="text-gray-300 flex justify-center mb-7">
+      <button onClick={() => {
+        handleClick()
+
+      } } className="text-white top-5 left-[90%] absolute md:hidden ">x</button>
         <NavLink to="">
           <MdProductionQuantityLimits className="w-12 h-12 text-green-500 " />
         </NavLink>

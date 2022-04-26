@@ -3,8 +3,6 @@ export const renplaceNullObjects = (arrays)=>{
        return replaceNull(object.dataValues);
 
    })
-
-   console.log(value);
    return value;
 
 }

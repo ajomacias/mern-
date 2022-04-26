@@ -28,7 +28,6 @@ export const updateProducto = async(req, res, next)=>{
   try {
     data = await Productos.update(producto,{ where: { code : code } , individualHooks : true });  
     data = replaceNull(data[1][0].dataValues);
-    console.log(data)
   } catch (err) {
     console.error(err);
     return next("409 there was an error updating the product");
@@ -62,7 +61,6 @@ export const getProductosByProveedor = async (req, res, next) => {
 
   const data = await Productos.findAll({attributes:['_id','code','name','price','detail'], 
   include:{ model: Proveedores, required : true ,attributes:['name']},where:{proveedor : proveedor} });
-  console.log(data)
 
   if (verify.isEmptyObject(data)) return next(`404 not exists calogue with type '${type}'`);
 
@@ -91,11 +89,19 @@ export const getProductoByCode = async (req, res, next) => {
 export const deleteProductoByCode = async(req,res,next) => {
     const code = req.params.code;
 
-    if(!isNaN(code))return next("400 the type param is a string");
+    //if(!isNaN(code))return next("400 the type param is a string");
 
     const verify = await Productos.count({where : {code:code}});
 
     if(verify != 1) return next("409 there was a problem with delete the product");
+
+    try{
+
+      Productos.destroy({ where:{ code :code} })
+
+    }catch(err){
+      return next("400 hubo un error al eliminar")
+    }
 
     return res.status(200).json({message : "delete successfull"})
 }

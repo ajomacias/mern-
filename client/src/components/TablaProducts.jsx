@@ -46,7 +46,7 @@ export const TablaProducts =() => {
   return (
     
       <>  
-        {productos ?<div className="md:p-5 w-full h-full md:w-10/12 md:h-5/6 overflow-y-scroll bg-zinc-500 ">
+        {productos.length !==0 ?<div className="md:p-5 w-full h-full md:w-10/12 md:h-5/6 overflow-y-scroll bg-zinc-500 ">
                <div className=" md:h-full h-full bg-zinc-100 flex items-center md:flex md:items-start md:bg-zinc-100">
                 <table className="table-auto  w-full text-leftborder-slate-600">
                     <thead className="bg-blue-500 text-white">
@@ -101,7 +101,7 @@ export const TablaProducts =() => {
                     </tbody>
                 </table>
                 </div>
-                </div> :<button onClick={()=>navigate("create")} className="text-white w-80 h-80 opacity-20 hover:opacity-40 " > <MdNoteAdd className="w-full h-full" /> </button>}       
+                </div> :<div className="flex justify-center h-full items-center"> <button onClick={()=>navigate("create")} className="text-white mr-16 w-80 h-80 opacity-20 hover:opacity-40 " > <MdNoteAdd className="w-full h-full" /> </button></div>}       
         </>
   )
 

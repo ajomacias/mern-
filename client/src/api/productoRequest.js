@@ -21,7 +21,7 @@ export const createProductRequest = async(data) =>{
 
         response = await axios.post("/api/productos",data,{
             headers:{
-                Authorization :"bearer"+ token
+                Authorization :"bearer "+ token
             }
         });
         return response;

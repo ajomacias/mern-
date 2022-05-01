@@ -40,7 +40,9 @@ export const TablaProducts =() => {
                 }} >No</button>
                 </div>
            </div>
-       ))
+       ),{
+           duration: 4000
+       })
    }
 
   return (
